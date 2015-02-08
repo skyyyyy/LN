@@ -1,0 +1,30 @@
+ the mirror of one BST 
+ 
+ //recursive
+ TreeNode* mirror(TreeNode* root) {
+  	if (root){
+  		mirror(root->left);
+  		mirror(root->right);
+  		TreeNode* tmp = root->left;
+  		root->left = root->right;
+  		root->right = tmp;
+  	}
+  	return root;
+}
+
+//iterative
+TreeNode* mirror_iterative(TreeNode* root){
+	if (!root) return NULL;
+	queue<TreeNode*> q;
+	q.push(root);
+	while (!q.empty()){
+		TreeNode* node = q.front();
+		q.pop();
+		TreeNode* tmp = node->left;
+		node->left = node->right;
+		node->right = tmp;
+		if (node->left) q.push(node->left);
+		if (node->right) q.push(node->right);
+	}
+	return root;
+}
