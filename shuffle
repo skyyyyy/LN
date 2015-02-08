@@ -1,0 +1,33 @@
+//Pick out k random elements from a very long linked list
+/*if the size of input is no more than the K, easy, everything goes to the output, and 
+  each element presenting in the final output is 100%;
+  if the size of intput is more than K, we want the probability of each item existing in the reservoir presenting in
+  the final output is K/K+i; let's prove:
+  1. assume we can prove, then before the new element comes, the probablity for each item in the reservoir is K/(K+i-1)
+  2. a new item comes, the probablity not to change the resevoir is i/(K+i), thus the possbility of each item staying 
+     in the reservior is K/(K+i-1) * i/(k+i)
+  3. if we change the reservoir, the possibility is K/(K+i), the chance for each item not to change 
+     is K/(K+i)*(K-1)/K*K/(K+i-1)
+  4. sum 2 and 3 up: K/(K+i-1)*i/(K+i) + K/(K+i)*(K-1)/K*K/(K+i-1) 
+                   = (Ki/(K+i-1)(K+i)) + (K*(K-1)*K/(K+i)*K*(K+i-1)
+				   = (Ki/(K+i-1)(K+i)) + (K*(K-1))/((K+i)(K+i-1))
+				   = K(i+K-1)/(K+i-1)(K+i)
+				   = K/(K+i)
+                    
+*/
+vector<int> t_PickKFromLongList(vector<int> input, int K)
+{
+	if(input.size() <= K) return input;
+	vector<int> output;
+	output.assign(input.begin(),input.begin()+K);
+	srand(time(NULL));
+	for(size_t i = K; i < input.size(); ++i)
+	{
+		int sample = rand()% i;
+		if(sample < K)
+		{
+			output[sample] = input[i];
+		}
+	}
+	return output;
+}
