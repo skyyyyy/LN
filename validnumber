@@ -1,0 +1,27 @@
+ void moveForward(const char* &s, bool& isNum){
+        while(*s && *s>='0' && *s<='9'){
+                ++s;
+                isNum = true;
+            }
+    }
+
+    bool isNumber(const char *s) {
+        if(!s) return false;
+        while(*s == ' ') ++s;
+        bool isNum = false;
+        if(*s == '+' || *s == '-') ++s;
+        moveForward(s, isNum);
+        
+        if(*s == '.'){
+            ++s;
+           moveForward(s, isNum);    
+        }
+        if(isNum && *s == 'e'){
+            ++s;
+            isNum = false;
+            if(*s=='+' || *s=='-') ++s;
+            moveForward(s, isNum);
+        }
+        while(isNum && *s==' ') ++s;
+        return isNum && !(*s);
+    }
