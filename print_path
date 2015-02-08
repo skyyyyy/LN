@@ -1,0 +1,33 @@
+//print all root-to-leaf paths for BST
+struct TreeNode {
+     int val;
+     TreeNode *left;
+     TreeNode *right;
+     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+};
+
+void print_path(TreeNode* root,  vector<int> &path){
+	if (!root) return;
+	path.push_back(root->val);
+	if (!root->left && !root->right){
+		for (int i = 0; i < path.size(); ++i){
+			cout << path[i];
+			if (i != path.size() - 1) cout << "-->";
+			else cout << endl;
+		}
+	} else{
+		if (root->left){
+			print_path(root->left, path);
+			path.pop_back();
+		}
+		if (root->right){
+			print_path(root->right, path);
+			path.pop_back();
+		}
+	}
+}
+
+void print_path(TreeNode *root) {
+	vector<int> path;
+	print_path(root, path);
+}
