@@ -1,0 +1,122 @@
+/**
+ * Definition of TreeNode:
+ * class TreeNode {
+ * public:
+ *     int val;
+ *     TreeNode *left, *right;
+ *     TreeNode(int val) {
+ *         this->val = val;
+ *         this->left = this->right = NULL;
+ *     }
+ * }
+ * Example of iterate a tree:
+ * Solution iterator = Solution(root);
+ * while (iterator.hasNext()) {
+ *    TreeNode * node = iterator.next();
+ *    do something for node
+ */
+class Inorder_Solution {
+private:
+    stack<TreeNode*> s;
+    void push(TreeNode* root){
+        while(root){
+            s.push(root);
+            root = root->left;
+        }
+    }
+public:
+    //@param root: The root of binary tree.
+    Solution(TreeNode *root) {
+        // write your code here
+        push(root);
+    }
+
+    //@return: True if there has next node, or false
+    bool hasNext() {
+        // write your code here
+        return !s.empty();
+    }
+    
+    //@return: return next node
+    TreeNode* next() {
+        // write your code here
+        TreeNode* p=s.top();
+        s.pop();
+        push(p->right);
+        return p;
+    }
+};
+
+
+class PreOrder_Solution {
+private:
+    stack<TreeNode*> s;
+public:
+    //@param root: The root of binary tree.
+    Solution(TreeNode *root) {
+        // write your code here
+        if(root) s.push(root);
+        
+    }
+
+    //@return: True if there has next node, or false
+    bool hasNext() {
+        // write your code here
+        return !s.empty();
+    }
+    
+    //@return: return next node
+    TreeNode* next() {
+        // write your code here
+        TreeNode* p=s.top();
+        s.pop();
+        if(p->right) s.push(p->right);
+        if(p->left) s.push(p->left);
+        return p;
+    }
+};
+
+class PostOrder_Solution {
+private:
+    stack<TreeNode*> s;
+    void push(TreeNode* root){
+        while(root){
+            s.push(root);
+            if(root->left){
+               root = root->left;
+            }else{
+               root = root->right;
+            }
+        }
+    }
+public:
+    //@param root: The root of binary tree.
+    Solution(TreeNode *root) {
+        // write your code here
+        push(root);
+    }
+
+    //@return: True if there has next node, or false
+    bool hasNext() {
+        // write your code here
+        return !s.empty();
+    }
+    
+    //@return: return next node
+    TreeNode* next() {
+        // write your code here
+        TreeNode* p=s.top();
+        s.pop();
+        if(!s.empty()){
+           if(s.top()->left == p) {
+              push(s.top()->right);
+           }
+        }
+        return p;
+    }
+};
+
+
+
+
+
