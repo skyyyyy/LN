@@ -1,0 +1,23 @@
+//print all the prime factors of a number
+public static void printPrimeFactors(int n) {  
+   if (n < 2) return ; // prime must >=2  
+     
+   System.out.println("Prime factors of " + n + ":");  
+   
+   while ((n & 1) == 0) {  
+     System.out.print(2 + " ");  
+     n /= 2;  
+   }  
+   
+   int rootN = (int)Math.sqrt(n);  
+   for (int i=3; i<=rootN; ++i) {  
+     while (n % i == 0) {  
+       System.out.print(i + " ");  
+       n /= i;  
+     }  
+   }  
+   
+   if (n > 2) { // there is at most one prime factor > sqrt(n)  
+     System.out.print(n);  
+   }  
+ }  
