@@ -1,0 +1,45 @@
+he difference between memcpy and memmove is that
+
+in memmove, the source memory of specified size is copied into buffer and then moved to destination. 
+So if the memory is overlapping, there are no side effects. 
+since it copied into another buffer, it's slower than memcpy
+
+in case of memcpy(), there is no extra buffer taken for source memory. 
+The copying is done directly on the memory so that when there is memory overlap, we get unexpected results.
+
+char str1[9] = "aabbccdd";
+
+int main( void )
+{
+    printf("The string: %s\n", str1);
+    memcpy(str1 + 2, str1, 6);
+    printf("New string: %s\n", str1);
+
+    strcpy_s(str1, sizeof(str1), "aabbccdd");   // reset string
+
+    printf("The string: %s\n", str1);
+    memmove(str1 + 2, str1, 6);
+    printf("New string: %s\n", str1);
+}
+Output:
+
+The string: aabbccdd
+New string: aaaabbbb
+The string: aabbccdd
+New string: aaaabbcc
+
+Looks weird, it's caused by optimization, too.
+
+    memcpy(str1 + 2, str1, 6);
+00341013  mov         eax,dword ptr [str1 (343018h)] 
+00341018  mov         dword ptr [str1+2 (34301Ah)],eax // put 4 bytes to destination, earlier than the above example
+0034101D  mov         cx,word ptr [str1+4 (34301Ch)]  // HA, new register! Holding a word, which is exactly the left 2 bytes 
+                             (after 4 bytes loaded to %eax)
+    printf("New string: %s\n", str1);
+00341024  push        offset str1 (343018h) 
+00341029  push        offset string "New string: %s\n" (342104h) 
+0034102E  mov         word ptr [str1+6 (34301Eh)],cx  // Again, pulling the stored word back from the new register
+00341035  call        esi  
+
+
+
