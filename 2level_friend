@@ -1,0 +1,12 @@
+Given a social graph, find if there is a path between two persons with at most 2 steps (3rd level connection), 
+how to handle it in distributed way (large graph stored at a large number of nodes, minimize cross-communication)
+
+ 1. 获得A的好友列表FLa,获得B的好友列表FLb
+: 2. 对FLa中的每个好友Fi，求Fi是否和B是二度好友(就是获得Fi的好友列表FLi,然后和
+: FLb求交）
+: 如果图很大，最基本的扩展方法是按userid做sharding，然后可以用mergeserver做并
+: 发的求交，或者直接把B的好友列表发送到Fi所在机器上做本地求交后，汇总。
+
+1 userid做sharding
+2 取userid的friendslist可以并发
+3 递归解决，判断A和B是否是N度好友，相当于判断A的好友和B的好友是否是(N-2)度好友
