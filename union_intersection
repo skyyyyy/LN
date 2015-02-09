@@ -1,0 +1,42 @@
+Find the union and intersection of two sorted arrays
+
+vector<int> find_union(const vector<int> &arr1, const vector<int> &arr2){
+  int m = arr1.size(), n = arr2.size();
+  int i=0, j=0;
+  vector<int> union;
+  while (i<m && j<n){
+     if(arr1[i] < arr2[j]){
+        union.push_back(arr1[i++]);
+     }else if(arr1[i] > arr2[j]) {
+        union.push_back(arr2[j++]);
+     } else {
+        union.push_back(arr1[i++]);
+        j++;
+     }
+  }
+  while(i < m) union.push_back(arr1[i++]);
+  while(j < n) union.push_back(arr2[j++]);
+  return res;
+}
+
+vector<int> find_intersection(const vector<int> &arr1, const vector<int> &arr2){
+   int m = arr1.size(), n = arr2.size();
+   int i=0, j =0;
+   vector<int> res;
+   while (i<m && j<n) {
+      if(arr1[i] < arr2[j]) {
+          ++i;
+      } else if(arr1[i] > arr2[j]) {
+         ++j;
+      } else {
+         res.push_back(arr1[i]);
+         ++i;
+         ++j;
+      }
+   }
+   return res;
+}
+
+
+
+
